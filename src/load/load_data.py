@@ -50,9 +50,9 @@ pn=os.path.abspath('../')
 
 path=os.path.join(pn,'input','search.csv')
 path2=os.path.join(pn,'input','meta_data')
-file=open(path2)
+f=open(path2)
 
-ld=LoadData(path,file.readline())
+ld=LoadData(path,f.readline())
 ld.runFile()
 
 sc=SeleniumScraper(ld.driverLocation,ld.rows)
