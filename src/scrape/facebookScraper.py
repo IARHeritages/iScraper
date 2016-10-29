@@ -15,13 +15,13 @@ def getSearch():
 
         query="iron age"
         p=requests.get("https://graph.facebook.com/search?access_token=" + token +  "&q=" + query + "&type=page")
-        list=[]
+        li=[]
         for i in p:
             list.append(i)
 
-        return list
+        return li
 
 
-list=getSearch()
-print(list)    
+li=getSearch()
+print(li)    
 
