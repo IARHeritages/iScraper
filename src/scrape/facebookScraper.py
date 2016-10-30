@@ -7,7 +7,7 @@ import facebook
 from facebook import requests
 
 def getSearch():
-        token = 'EAACEdEose0cBAJLrzut4iiCif3Ff3ZCGLGCIXuWYqTV5RC9ymAGc0GotTH71vsoLexaPXVHRzx9ZAnhZAiZBEgZCtGuBQrm3D0ryjFBupO24LNQlZBJ1B4BEEMgvOf1bZBjwyYMENjAZCXnapmKRK5J2OrPA4rINdfB64hZBeJlRVEgZDZD'
+        token = 'EAACEdEose0cBAKgjwbzaAFtuTpsRaZAlg7XPNwdgC4swKlwgMsZAmCaxhL3YTkpBFfzDj87BFQa7E72e3hKcSWFIr3CDExkP93txZCZBCL75mAGsM83NMvUfJOQJEjrkdudA3cQcI3HuIr8zrGIyW2bOeTtptmYlHMtYwZCcjFgZDZD'
 
         graph = facebook.GraphAPI(token)
         profile = graph.get_object("me")
@@ -17,11 +17,11 @@ def getSearch():
         p=requests.get("https://graph.facebook.com/search?access_token=" + token +  "&q=" + query + "&type=page")
         li=[]
         for i in p:
-            list.append(i)
+            li.append(i)
 
         return li
 
 
 li=getSearch()
-print(li)    
+   
 
