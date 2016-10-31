@@ -50,6 +50,7 @@ class NLTK_Nouns():
                 lines.append(line)
             writer.writerows(lines)
         
+        
         ofile.close()
         
               
