@@ -7,7 +7,7 @@ import facebook
 from facebook import requests
 
 def getSearch():
-        token = 'EAACEdEose0cBAMnTy6MY4QAIAzPczvNZCUcdECAIncgmZCXsopgBMwLUJeAosEWQS4cN8yBeHuIiM4aicRQqooDLrrQEYBRijm3ph8PLk1z6flA2qUmLhxykOq68EdHcBX3GoxPgHGQOWS4ZCMk5GnM6WbXfifL6wGNYMkjbgZDZD'
+        token = 'EAACEdEose0cBALhsD3tTU4tORZAFY48AQio1wuY8X4t0yFxjGXkXpeYB5Wyb6DJl5Kj8jNISmeokG26OGuIsSk0hdZApaBdZCNqQsq0wv4lQgEEPkrA1g2CUbrn4PKozIoJmsZBDvvM5dDHcxsVV0DP9mcikG34ZCaXpJSrlMOQZDZD'
 
         graph = facebook.GraphAPI(token)
         profile = graph.get_object("me")
