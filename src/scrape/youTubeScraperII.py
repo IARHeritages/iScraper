@@ -26,13 +26,13 @@ class YouTubeHandler(object):
 
         ## Users options
         self.retreive_fr_playlist = 1 # assume search for the playlist
-        self.num_playlist_to_scan = 10 # get the number of playlist to scan.
+        self.num_playlist_to_scan = 1000 # get the number of playlist to scan.
         self.download_as_audio =1 # if 0 - download as video
         self.enable_sorted_download = 1 # 1 -enable sorted title before download
         self.num_search_results = 30 # number of target to search, temp set only for non playlist
         
         ## url construct string text
-        self.prefix_of_search_url = "https://www.youtube.com/results?search_query="
+        self.prefix_of_search_url = "https://www.youtube.com/results?sp=EgIIBQ%253D%253D&q="
         self.target_yt_search_url_str = ''
         self.filter_url_portion = '&filters=playlist'#can add in different filter url portion, default set to playlist filter
         self.page_url_portion = '' # now temp set for non playlist search
@@ -62,7 +62,7 @@ class YouTubeHandler(object):
         """
         self.reformat_search_for_spaces()
         self.target_yt_search_url_str = self.prefix_of_search_url + self.yt_search_key + self.filter_url_portion 
-
+        
     def get_dom_object(self, url_target):
         """ Get dom object based on element for scraping
             Take into consideration that there might be query problem.
@@ -116,7 +116,7 @@ class YouTubeHandler(object):
         """
         #start with forming the search
         self.form_search_url()
-
+        print(self.target_yt_search_url_str)
         # Get the dom object from the search page
         search_result_dom = self.get_dom_object(self.target_yt_search_url_str)
 

@@ -6,7 +6,7 @@ Created on Dec 11, 2016
 from scrape.youTubeScraperII import YouTubeHandler
 import csv
  
-search_key = 'roman empire britain' #keywords
+search_key = '%22Roman Empire%22 Britain' #keywords
 yy = YouTubeHandler(search_key)
 yy.download_as_audio =1 # 1- download as audio format, 0 - download as video
 yy.set_num_playlist_to_extract(1000) # number of playlist to download
@@ -20,8 +20,6 @@ yy.get_playlist_url_list()
 yy.get_video_link_fr_all_playlist()
 fieldnames = ['Title', 'Link']
 
-resultFile = open("output.csv",'wb')
-wr = csv.writer(resultFile, dialect='excel')
 with open('YouTubeLinks.csv', 'w') as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
