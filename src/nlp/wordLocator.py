@@ -17,8 +17,8 @@ class Locator:
             offset += len(token)
 
 
-s = "And now for something completely different and."
-loc=Locator()
-for token in loc.spans(s):
-    print token
-    assert token[0]==s[token[1]:token[2]]
+#s = "And now for something completely different and."
+#loc=Locator()
+#for token in loc.spans(s):
+#    print token
+#    assert token[0]==s[token[1]:token[2]]

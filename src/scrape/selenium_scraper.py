@@ -42,7 +42,7 @@ class SeleniumScraper:
                 query=unicode(i,"utf-8")
             
                 print(query)
-                url=base_url + query
+                url=base_url + query+" brexit&src=typd"
 
 
                 browser.get(url)
