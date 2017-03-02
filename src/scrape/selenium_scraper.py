@@ -58,7 +58,7 @@ class SeleniumScraper:
 
                     for tweet in tweets:
                         print(str(tt)+" : "+tweet.text)
-                        writer.writerow({'Number': str(tt),'Tweet':str(tweet.text.encode("utf-8"))})
+                        writer.writerow({'Number': str(tt),'Tweet':tweet.text.encode("utf-8")})
                         tt=tt+1
 ls=["Roman Empire"]                    
 s=SeleniumScraper("/Users/maltaweel/Desktop/chromedriver",ls)

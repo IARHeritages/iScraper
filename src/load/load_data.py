@@ -1,7 +1,6 @@
 import csv
 import os
 
-from scrape.selenium_scraper import SeleniumScraper
 
 '''This is a class where data are loaded from a .csv file.
 That file's data are then passed to the data object.
