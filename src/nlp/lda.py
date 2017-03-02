@@ -20,7 +20,7 @@ class LDA:
     listResults=[]
     
     '''
-        Method to get the text output from the scraping.
+    Method to get the text output from the scraping.
     '''
     def retrieveText(self):
         
@@ -86,8 +86,17 @@ class LDA:
             ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=2, id2word = dictionary, passes=20)
             t=ldamodel.print_topics(num_topics=2, num_words=10)
             
-            result_dict={}
-            for a,b in t:
+            #term and values from text
+            result_dict=self.addTotalTermResults(t)
+            
+            #add results to total kept in a list     
+            self.addToResults(result_dict)
+    
+    '''The terms and values from text.
+    @return the  term and values'''
+    def addTotalTermResults(self,t):
+        result_dict={}
+        for a,b in t:
                 text=re.sub('"',"",b)
                 text.replace(" ","")
                 txts=text.split("+")
@@ -99,15 +108,15 @@ class LDA:
                         continue
                     else:
                         t=t.strip()
-                        result_dict[t]=v    
-                    
-            self.addToResults(result_dict)
-    
+                        result_dict[t]=v 
+                           
+        return result_dict
+                        
     '''Add dictionary to a list of results from each text'''        
     def addToResults(self,result_dict):
             self.listResults.append(result_dict)
     
-    '''Ouput results of the analysis'''    
+    '''Output results of the analysis'''    
     def printResults(self):
         
         os.chdir('../')
@@ -129,9 +138,14 @@ class LDA:
                 writer.writerow({'Term': str(key),'Value':str(v)})
         
 
+    '''Method aggregates all the dictionaries for keyterms and theri values.
+     @return dct a dictionary of all keyterms and values'''
+                
     def dictionaryResults(self):
+        #set the dictionary
         dct={}
         
+        #iterate over all tweets and add to total dictionary
         for dictionary in self.listResults:
                 for key in dictionary:
                     
