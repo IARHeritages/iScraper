@@ -163,6 +163,7 @@ class LDA:
                         
         return dct
 
+#iterate and try a range of number for the number of topics
 for nn in range(1,10,1):
     lda=LDA()
     lda.retrieveText(nn)
