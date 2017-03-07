@@ -27,7 +27,7 @@ class LDA:
         os.chdir("../")
         pn=os.path.abspath('../')
         os.chdir(pn+'/output')
-        with open('output.csv', 'rb') as csvfile:
+        with open('output.csv', 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter='*', quotechar='|')
             
             i=0
@@ -40,13 +40,13 @@ class LDA:
                 text=row[1]
                 text=re.sub('"','',text)
                 text=re.sub(',','',text)
-                doc_set=[text.decode('utf-8').strip()]
+                doc_set=[text.decode('ISO-8859-1').strip()]
                 self.applyModel(doc_set)
     
     '''The Latent Dirichlet Allocation model applied to the text'''
     def applyModel(self, doc_set):
         
-        
+        # reg expression tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
 
         # create English stop words list
@@ -135,7 +135,7 @@ class LDA:
             
             for key in dct:
                 v=dct[key]
-                writer.writerow({'Term': str(key),'Value':str(v)})
+                writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
         
 
     '''Method aggregates all the dictionaries for keyterms and theri values.
