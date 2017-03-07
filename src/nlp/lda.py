@@ -116,7 +116,8 @@ class LDA:
                            
         return result_dict
                         
-    '''Add dictionary to a list of results from each text'''        
+    '''Add dictionary to a list of results from each text
+    @param result_dict this is the resulting terms'''        
     def addToResults(self,result_dict):
             self.listResults.append(result_dict)
     
