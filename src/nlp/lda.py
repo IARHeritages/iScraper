@@ -46,7 +46,7 @@ class LDA:
     '''The Latent Dirichlet Allocation model applied to the text'''
     def applyModel(self, doc_set):
         
-        # reg expression tokenizer
+        # reg. expression tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
 
         # create English stop words list
