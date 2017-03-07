@@ -13,6 +13,7 @@ import os
 import gensim
 import csv
 import re
+import text
 
 
 class LDA:
@@ -21,13 +22,14 @@ class LDA:
     
     '''
     Method to get the text output from the scraping.
+    @param nn number of topics
     '''
-    def retrieveText(self):
+    def retrieveText(self,nn):
         
         os.chdir("../")
         pn=os.path.abspath('../')
         os.chdir(pn+'/output')
-        with open('output.csv', 'rU') as csvfile:
+        with open('output'+str(nn)+'.csv', 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter='*', quotechar='|')
             
             i=0
@@ -41,10 +43,12 @@ class LDA:
                 text=re.sub('"','',text)
                 text=re.sub(',','',text)
                 doc_set=[text.decode('ISO-8859-1').strip()]
-                self.applyModel(doc_set)
+                self.applyModel(doc_set,nn)
     
-    '''The Latent Dirichlet Allocation model applied to the text'''
-    def applyModel(self, doc_set):
+    '''The Latent Dirichlet Allocation model applied to the text
+     @param doc_set the text
+     @param nn the topic number'''
+    def applyModel(self, doc_set, nn):
         
         # reg. expression tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
@@ -70,11 +74,11 @@ class LDA:
             stopped_tokens = [i for i in tokens if not i in en_stop]
     
             # stem tokens
-            #stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
+            stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
     
             # add tokens to list
-            #texts.append(stemmed_tokens)
-            texts.append(stopped_tokens)
+            texts.append(stemmed_tokens)
+            #texts.append(stopped_tokens)
             
             # turn our tokenized documents into a id <-> term dictionary
             dictionary = corpora.Dictionary(texts)
@@ -83,8 +87,8 @@ class LDA:
             corpus = [dictionary.doc2bow(text) for text in texts]
 
             # generate LDA model
-            ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=2, id2word = dictionary, passes=20)
-            t=ldamodel.print_topics(num_topics=2, num_words=10)
+            ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, id2word = dictionary, passes=20)
+            t=ldamodel.print_topics(num_topics=nn, num_words=10)
             
             #term and values from text
             result_dict=self.addTotalTermResults(t)
@@ -159,6 +163,7 @@ class LDA:
                         
         return dct
 
-lda=LDA()
-lda.retrieveText()
-lda.printResults()
+for nn in range(1,10,1):
+    lda=LDA()
+    lda.retrieveText(nn)
+    lda.printResults()
