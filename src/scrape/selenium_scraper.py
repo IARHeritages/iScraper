@@ -20,7 +20,7 @@ class SeleniumScraper:
         pn=os.path.abspath('../')
         path=pn+'/output'
         
-        filename=path+'/'+'output.csv'
+        filename=path+'/'+'output_celtic.csv'
         
         self.csvfile=filename
         

@@ -22,14 +22,13 @@ class LDA:
     
     '''
     Method to get the text output from the scraping.
+    @param pn the path to find the relevant text
     @param nn number of topics
     '''
-    def retrieveText(self,nn):
-        
-        os.chdir("../")
-        pn=os.path.abspath('../')
+    def retrieveText(self,pn,nn):
+    
         os.chdir(pn+'/output')
-        with open('output'+str(nn)+'.csv', 'rU') as csvfile:
+        with open('output_celtic.csv', 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter='*', quotechar='|')
             
             i=0
@@ -74,18 +73,21 @@ class LDA:
             stopped_tokens = [i for i in tokens if not i in en_stop]
     
             # stem tokens
-            stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
+            #stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
     
             # add tokens to list
-            texts.append(stemmed_tokens)
-            #texts.append(stopped_tokens)
+            #texts.append(stemmed_tokens)
+            texts.append(stopped_tokens)
             
             # turn our tokenized documents into a id <-> term dictionary
             dictionary = corpora.Dictionary(texts)
-    
+            
             # convert tokenized documents into a document-term matrix
             corpus = [dictionary.doc2bow(text) for text in texts]
-
+            
+            if len(dictionary)<1:
+                continue
+            
             # generate LDA model
             ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, id2word = dictionary, passes=20)
             t=ldamodel.print_topics(num_topics=nn, num_words=10)
@@ -121,14 +123,15 @@ class LDA:
     def addToResults(self,result_dict):
             self.listResults.append(result_dict)
     
-    '''Output results of the analysis'''    
-    def printResults(self):
+    '''Output results of the analysis
+    @param nn the number of topics used for the output name'''    
+    def printResults(self,nn):
         
         os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/iScraper/output'
         
-        filename=path+'/'+'lda_results.csv'
+        filename=path+'/'+'lda_results'+str(nn)+'.csv'
         
         fieldnames = ['Term','Value']
         
@@ -143,7 +146,7 @@ class LDA:
                 writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
         
 
-    '''Method aggregates all the dictionaries for keyterms and theri values.
+    '''Method aggregates all the dictionaries for keyterms and their values.
      @return dct a dictionary of all keyterms and values'''
                 
     def dictionaryResults(self):
@@ -163,9 +166,13 @@ class LDA:
                         dct[key]=v 
                         
         return dct
+    
+# get the current working path
+os.chdir("../")
+pn=os.path.abspath('../')
 
-#iterate and try a range of number for the number of topics
+#iterate and try a range of numbers for the number of topics
 for nn in range(1,10,1):
     lda=LDA()
-    lda.retrieveText(nn)
-    lda.printResults()
+    lda.retrieveText(pn,nn)
+    lda.printResults(nn)
