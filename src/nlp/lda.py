@@ -99,7 +99,7 @@ class LDA:
             self.addToResults(result_dict)
     
     '''The terms and values from text.
-    @return the  term and values'''
+    @return result_dict dictionary of the term and values'''
     def addTotalTermResults(self,t):
         result_dict={}
         for a,b in t:
