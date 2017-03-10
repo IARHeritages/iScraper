@@ -9,11 +9,13 @@ from nltk.tokenize import RegexpTokenizer
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
 from gensim import corpora, models
+
 import os
 import gensim
 import csv
 import re
 import text
+import sys
 
 
 class LDA:
@@ -28,22 +30,27 @@ class LDA:
     def retrieveText(self,pn,nn):
     
         os.chdir(pn+'/output')
-        with open('output_celtic.csv', 'rU') as csvfile:
-            reader = csv.reader(csvfile, delimiter='*', quotechar='|')
-            
+        with open('output_roman_empire.csv', 'rU') as csvfile:
+            reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
             i=0
-            for row in reader:
-                if(i==0):
-                    i=i+1
-                    continue
-                if(len(row)<2):
-                    continue
-                text=row[1]
-                text=re.sub('"','',text)
-                text=re.sub(',','',text)
-                doc_set=[text.decode('ISO-8859-1').strip()]
-                self.applyModel(doc_set,nn)
-    
+            try:
+                for row in reader:
+                    doc_set=[]
+                    if(i==0):
+                        i=i+1
+                        continue
+                    if(len(row)<2):
+                        continue
+                    text=row[1]
+                    text=re.sub('"','',text)
+                    text=re.sub(',','',text)
+                    doc_set.append(text.decode('ISO-8859-1').strip())
+                    self.applyModel(doc_set,nn)
+            except csv.Error, e:
+                sys.exit('line %d: %s' % (reader.line_num, e))
+            
+            self.applyModel(doc_set,nn)
+
     '''The Latent Dirichlet Allocation model applied to the text
      @param doc_set the text
      @param nn the topic number'''
@@ -90,6 +97,7 @@ class LDA:
             
             # generate LDA model
             ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, id2word = dictionary, passes=20)
+            
             t=ldamodel.print_topics(num_topics=nn, num_words=10)
             
             #term and values from text
@@ -172,7 +180,7 @@ os.chdir("../")
 pn=os.path.abspath('../')
 
 #iterate and try a range of numbers for the number of topics
-for nn in range(1,10,1):
+for nn in range(70,100,10):
     lda=LDA()
     lda.retrieveText(pn,nn)
     lda.printResults(nn)
