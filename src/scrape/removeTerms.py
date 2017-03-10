@@ -12,26 +12,31 @@ import sys
 
 class TextRemover:
     
-    def retrieveText(self,pn,term):
+    def retrieveText(self,pn,terms):
         result={}
         os.chdir(pn+'/output')
         with open('output_roman_empire.csv', 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
-            i=0
+            i=-1
             try:
                 for row in reader:
                     
-                    if(i==0):
+                    if(i==-1):
+                        i=i+1
                         continue
                     if(len(row)<2):
                         continue
                     text=row[1]
                     
-                    if (term.upper() in text) or (term.lower() in text): 
-                        continue
-                    else:
+                    tFalse=True
+                    for term in terms:
+                        if (term in text) or (term.lower() in text.lower()): 
+                            tFalse=False
+                            break
+        
+                    if(tFalse==True):
                         result[str(i)]=text
-                        i=i+1
+                    i=i+1
             except csv.Error, e:
                 sys.exit('line %d: %s' % (reader.line_num, e))
             
@@ -59,7 +64,7 @@ class TextRemover:
 
 os.chdir("../")
 pn=os.path.abspath('../')
-term="Holy Roman Empire"
+terms=["Holy Roman Empire","#Holy #Roman #Empire","Holy Roman","#Holy #Roman",]
 tr=TextRemover()
-result=tr.retrieveText(pn,term)
+result=tr.retrieveText(pn,terms)
 tr.printResults(result,"roman_empire2")

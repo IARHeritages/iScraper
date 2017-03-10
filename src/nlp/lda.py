@@ -30,7 +30,7 @@ class LDA:
     def retrieveText(self,pn,nn):
     
         os.chdir(pn+'/output')
-        with open('output_roman_empire.csv', 'rU') as csvfile:
+        with open('output_roman_empire2.csv', 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
             i=0
             try:
