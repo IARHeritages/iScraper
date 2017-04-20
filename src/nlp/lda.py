@@ -29,14 +29,15 @@ class LDA:
         doc_set=[]
         os.chdir(pn+'/output')
         
-        
+        result=[]
         for filename in os.listdir(os.getcwd()):
             txt=''
-            if(filename == ".DS_Store" or "lda_" in filename ):
+            if(filename == ".DS_Store" or "lda" in filename or "hdp" in filename):
                 continue
             print(filename)
             with open(filename, 'rU') as csvfile:
                 reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
+                
                 i=0
                 try:
                     for row in reader:
@@ -49,9 +50,24 @@ class LDA:
                         text=row[1]
                         text=re.sub('"','',text)
                         text=re.sub(',','',text)
-                        txt=txt+" "+text
-                  
+                    
+                        tFalse=True
                         
+                        if(len(result)==0):
+                            result.append(text)
+                            i+=1
+                            txt=txt+" "+text
+                            continue
+                        for s in result:
+                            if(text in s):
+                                tFalse=False
+                                break
+                            
+                        if(tFalse==True):
+                            result.append(text)
+                            txt=txt+" "+text
+                            
+                        i+=1 
                 except csv.Error, e:
                     sys.exit('line %d: %s' % (reader.line_num, e))
                 
@@ -104,7 +120,16 @@ class LDA:
                 continue
             
             # generate LDA model
-            ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, id2word = dictionary, passes=20)
+            
+            
+            ldamodel=None
+            if(self.ldamodel==None):
+                self.ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, id2word = dictionary, passes=20)
+                ldamodel = self.ldamodel
+            
+            else:
+                ldamodel = self.ldamodel
+                ldamodel.update(corpus)
             
             t=ldamodel.print_topics(num_topics=nn, num_words=10)
             
@@ -113,6 +138,9 @@ class LDA:
             
             #add results to total kept in a list     
             self.addToResults(result_dict)
+            
+           
+            
     
     '''The terms and values from text.
     @return result_dict dictionary of the term and values'''
@@ -181,13 +209,3 @@ class LDA:
                         
         return dct
     
-# get the current working path
-os.chdir("../")
-pn=os.path.abspath('../')
-
-#iterate and try a range of numbers for the number of topics
-for nn in range(10,400,10):
-    lda=LDA()
-    results=lda.retrieveText(pn)
-    lda.applyModel(results, nn)
-    lda.printResults(nn)
