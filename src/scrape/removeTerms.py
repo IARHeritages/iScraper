@@ -9,13 +9,15 @@ import csv
 import re
 import text
 import sys
+import codecs
 
 class TextRemover:
     
     def retrieveText(self,pn,terms):
         result={}
         os.chdir(pn+'/output')
-        with open('output_roman_empire.csv', 'rU') as csvfile:
+        
+        with open('output_vote_remain_Dark_Age.csv', 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
             i=-1
             try:
@@ -33,13 +35,19 @@ class TextRemover:
                         if (term in text) or (term.lower() in text.lower()): 
                             tFalse=False
                             break
-        
-                    if(tFalse==True):
+                    
+                    for s in result:
+                        t=result[s]
+                        if(text in t):
+                            tFalse=False
+                            break
+                    if(tFalse==True ):
                         result[str(i)]=text
                     i=i+1
             except csv.Error, e:
                 sys.exit('line %d: %s' % (reader.line_num, e))
-            
+                 
+                 
             return result
 
     def printResults(self,result,nn):
@@ -52,10 +60,8 @@ class TextRemover:
         
         fieldnames = ['Number','Tweet']
         
-        
         with open(filename, 'wb') as csvf:
             writer = csv.DictWriter(csvf, fieldnames=fieldnames)
-
             writer.writeheader()
             
             for key in result:
@@ -64,7 +70,8 @@ class TextRemover:
 
 os.chdir("../")
 pn=os.path.abspath('../')
-terms=["Holy Roman Empire","#Holy #Roman #Empire","Holy Roman","#Holy #Roman",]
+#terms=["'Holy' Roman","Holy#","Holy Roman","#Holy #Roman",]
+terms=["dfdsfsdfdfssf"]
 tr=TextRemover()
 result=tr.retrieveText(pn,terms)
-tr.printResults(result,"roman_empire2")
+tr.printResults(result,"vote_remain_Dark_Age2")

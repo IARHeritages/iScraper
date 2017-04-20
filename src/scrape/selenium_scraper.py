@@ -9,9 +9,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-
 class SeleniumScraper:
-
 
     def __init__(self,driverLocation,ls):
         self.driverLocation=driverLocation
@@ -20,7 +18,7 @@ class SeleniumScraper:
         pn=os.path.abspath('../')
         path=pn+'/output'
         
-        filename=path+'/'+'output_celtic.csv'
+        filename=path+'/'+'output_voteremain_claudius.csv'
         
         self.csvfile=filename
         
@@ -35,15 +33,14 @@ class SeleniumScraper:
 
             writer.writeheader()
             
-            
+
             tt=0
             for i in self.list:
             
                 query=unicode(i,"utf-8")
             
                 print(query)
-                url=base_url + query+" brexit&src=typd"
-
+                url=base_url + query+"voteremain&src=typd"
 
                 browser.get(url)
                 time.sleep(1)
@@ -60,6 +57,7 @@ class SeleniumScraper:
                         print(str(tt)+" : "+tweet.text)
                         writer.writerow({'Number': str(tt),'Tweet':'*'+tweet.text.encode("utf-8")})
                         tt=tt+1
-ls=["Roman Empire"]                    
+                        
+ls=["iron age"]                    
 s=SeleniumScraper("/Users/maltaweel/Desktop/chromedriver",ls)
 s.runScraper()

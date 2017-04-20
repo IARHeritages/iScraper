@@ -17,7 +17,6 @@ import re
 import text
 import sys
 
-
 class LDA:
     
     listResults=[]
@@ -25,31 +24,40 @@ class LDA:
     '''
     Method to get the text output from the scraping.
     @param pn the path to find the relevant text
-    @param nn number of topics
     '''
-    def retrieveText(self,pn,nn):
-    
+    def retrieveText(self,pn):
+        doc_set=[]
         os.chdir(pn+'/output')
-        with open('output_roman_empire2.csv', 'rU') as csvfile:
-            reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
-            i=0
-            try:
-                for row in reader:
-                    doc_set=[]
-                    if(i==0):
-                        i=i+1
-                        continue
-                    if(len(row)<2):
-                        continue
-                    text=row[1]
-                    text=re.sub('"','',text)
-                    text=re.sub(',','',text)
-                    doc_set.append(text.decode('ISO-8859-1').strip())
-                    self.applyModel(doc_set,nn)
-            except csv.Error, e:
-                sys.exit('line %d: %s' % (reader.line_num, e))
+        
+        
+        for filename in os.listdir(os.getcwd()):
+            txt=''
+            if(filename == ".DS_Store" or "lda_" in filename ):
+                continue
+            print(filename)
+            with open(filename, 'rU') as csvfile:
+                reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
+                i=0
+                try:
+                    for row in reader:
+                        if(i==0):
+                            i=i+1
+                            continue
+                        if(len(row)<2):
+                            continue
+                        
+                        text=row[1]
+                        text=re.sub('"','',text)
+                        text=re.sub(',','',text)
+                        txt=txt+" "+text
+                  
+                        
+                except csv.Error, e:
+                    sys.exit('line %d: %s' % (reader.line_num, e))
+                
+            doc_set.append(unicode(txt, errors='replace'))
             
-            self.applyModel(doc_set,nn)
+        return doc_set
 
     '''The Latent Dirichlet Allocation model applied to the text
      @param doc_set the text
@@ -153,10 +161,8 @@ class LDA:
                 v=dct[key]
                 writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
         
-
     '''Method aggregates all the dictionaries for keyterms and their values.
-     @return dct a dictionary of all keyterms and values'''
-                
+     @return dct a dictionary of all keyterms and values'''           
     def dictionaryResults(self):
         #set the dictionary
         dct={}
@@ -180,7 +186,8 @@ os.chdir("../")
 pn=os.path.abspath('../')
 
 #iterate and try a range of numbers for the number of topics
-for nn in range(70,100,10):
+for nn in range(10,400,10):
     lda=LDA()
-    lda.retrieveText(pn,nn)
+    results=lda.retrieveText(pn)
+    lda.applyModel(results, nn)
     lda.printResults(nn)
