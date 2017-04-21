@@ -8,7 +8,6 @@ import os
 import csv
 import sys
 import numpy
-from scipy.fftpack.realtransforms import dct
 
 class Analysis:
     
@@ -82,9 +81,7 @@ class Analysis:
             
             
     def printResults(self,rslt1,rslt2):
-        
-        lines=[]
-        
+    
         os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/iScraper/output'
