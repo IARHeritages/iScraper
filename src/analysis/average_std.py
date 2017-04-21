@@ -1,4 +1,7 @@
 '''
+Class for performing basic statistical analysis on terms and topic model results, 
+such as mean and standard deviation for dictionary results (key term and value).
+
 Created on Apr 21, 2017
 
 @author: maltaweel
@@ -11,6 +14,11 @@ import numpy
 
 class Analysis:
     
+    '''
+    Method to load files and organize terms with their topic model values.
+    
+    @param pn the path to use for data
+    '''
     def loadData(self,pn):
     
         os.chdir(pn)
@@ -61,6 +69,11 @@ class Analysis:
                         
         return dct
     
+    '''
+    The mean calculation.
+    
+    @param dct the dictionary with values
+    '''
     def mean(self,dct):
         rslt={}
         for s in dct:
@@ -70,6 +83,11 @@ class Analysis:
             
         return rslt
     
+    '''
+    The standard deviation calculation.
+    
+    @param dct the dictionary with values
+    '''
     def standard_dev(self,dct):
         rslt={}
         for s in dct:
@@ -79,7 +97,12 @@ class Analysis:
             
         return rslt
             
-            
+    '''
+    Method to print relevant term, average, and standard deviation results
+    
+    @param rslt1 this is the dictionary of mean values
+    @param rslt2 this is the dictionary of standard deviation values
+    '''    
     def printResults(self,rslt1,rslt2):
     
         os.chdir('../')
@@ -101,11 +124,12 @@ class Analysis:
                 writer.writerow({'Term': str(s),'Average':str(a),'STD':str(std)})
 
             
-# get the current working path
+# get the working path
 os.chdir("../")
 pn=os.path.abspath('../')
 pn=pn+"/hdp"
 
+#run the analysis
 a=Analysis()
 res=a.loadData(pn)
 mean=a.mean(res)
