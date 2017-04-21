@@ -20,6 +20,7 @@ import sys
 
 
 class HDP(lda.LDA):
+    hdp=None
     
     def applyModel(self, doc_set, nn):
         
@@ -56,23 +57,30 @@ class HDP(lda.LDA):
             # turn our tokenized documents into a id <-> term dictionary
             dictionary = corpora.Dictionary(texts)
             
+            if(self.dictionary==None):
+                self.dictionary=dictionary
+            
             # convert tokenized documents into a document-term matrix
-            corpus = [dictionary.doc2bow(text) for text in texts]
+            corpus = [dictionary.doc2bow(text,allow_update=True) for text in texts]
             
             if len(dictionary)<1:
                 continue
             
-            hdp=None
-            if(self.hdp==None):
-                self.hdp=models.HdpModel(corpus, id2word=dictionary)
-                hdp = models.HdpModel(corpus, id2word=dictionary)
+            hdp=models.HdpModel(corpus, id2word=dictionary)
+#          hdp=None
+#          if(self.hdp==None):
+#              self.hdp=models.HdpModel(corpus, id2word=dictionary)
+#              hdp = self.hdp
             
-            else:
-                hdp = self.hdp
-                hdp.update(corpus)
+#         else:
+#             self.dictionary.merge_with(dictionary)
+#              hdp=models.HdpModel.load("hdp_results")
+#              self.hdp=models.HdpModel(hdp.corpus, id2word=self.dictionary)
+#              self.hdp.update(corpus)
+#              hdp=self.hdp
             
             
-            t=hdp.print_topics(num_topics=-1, num_words=10)
+            t=hdp.print_topics(num_topics=-1, num_words=nn)
             
             #term and values from text
             result_dict=self.addTotalTermResults(t)
@@ -80,15 +88,16 @@ class HDP(lda.LDA):
             #add results to total kept in a list     
             self.addToResults(result_dict)
             
+#          hdp.save("hdp_results")
             
             
-    def printResults(self,nn):
+    def printResults(self,nn,i):
         
         os.chdir('../')
         pn=os.path.abspath('../')
-        path=pn+'/iScraper/output'
+        path=pn+'/iScraper/results'
         
-        filename=path+'/'+'hdp_results'+str(nn)+'.csv'
+        filename=path+'/'+'hdp_results'+str(nn)+"-"+str(i)+'.csv'
         
         fieldnames = ['Term','Value']
         

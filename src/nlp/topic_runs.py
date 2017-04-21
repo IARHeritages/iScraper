@@ -14,19 +14,18 @@ import os
 # get the current working path
 os.chdir("../")
 pn=os.path.abspath('../')
-
-hdp=HDP()   
-lda=LDA()
  
 #iterate and try a range of numbers for the number of topics
-for nn in range(50,70,10):
+
+for i in range(1,100):
+    hdp=HDP()   
     results=hdp.retrieveText(pn)
-    hdp.applyModel(results, nn)
-    hdp.printResults(nn)    
+    hdp.applyModel(results, 70)
+    hdp.printResults(70,i)    
     
 #iterate and try a range of numbers for the number of topics
-for nn in range(50,70,10):
-   
+for i in range(1,100):
+    lda=LDA()
     results=lda.retrieveText(pn)
-    lda.applyModel(results, nn)
-    lda.printResults(nn)
+    lda.applyModel(results, 70)
+    lda.printResults(70,i)

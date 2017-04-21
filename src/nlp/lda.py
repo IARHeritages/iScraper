@@ -18,6 +18,9 @@ import text
 import sys
 
 class LDA:
+    ldamodel=None
+    dictionary=None
+    corpus=None
     
     listResults=[]
     
@@ -26,13 +29,15 @@ class LDA:
     @param pn the path to find the relevant text
     '''
     def retrieveText(self,pn):
+        del self.listResults[:]
+        
         doc_set=[]
         os.chdir(pn+'/output')
         
         result=[]
         for filename in os.listdir(os.getcwd()):
             txt=''
-            if(filename == ".DS_Store" or "lda" in filename or "hdp" in filename):
+            if(filename == ".DS_Store" or "lda" in filename or "hdp" in filename or ".csv" not in filename):
                 continue
             print(filename)
             with open(filename, 'rU') as csvfile:
@@ -78,6 +83,7 @@ class LDA:
     '''The Latent Dirichlet Allocation model applied to the text
      @param doc_set the text
      @param nn the topic number'''
+     
     def applyModel(self, doc_set, nn):
         
         # reg. expression tokenizer
@@ -112,25 +118,31 @@ class LDA:
             
             # turn our tokenized documents into a id <-> term dictionary
             dictionary = corpora.Dictionary(texts)
-            
+                            
             # convert tokenized documents into a document-term matrix
-            corpus = [dictionary.doc2bow(text) for text in texts]
+            corpus = [dictionary.doc2bow(text,allow_update=True) for text in texts]
+            
+            if(self.dictionary==None):
+                self.dictionary=dictionary
+                self.corpus=corpus
             
             if len(dictionary)<1:
                 continue
             
             # generate LDA model
+            ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, update_every=1,id2word = dictionary, passes=20)
+#            ldamodel=None
+#            if(self.ldamodel==None):
+#                self.ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, update_every=1,id2word = dictionary, passes=20)
+#                ldamodel = self.ldamodel
             
-            
-            ldamodel=None
-            if(self.ldamodel==None):
-                self.ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, id2word = dictionary, passes=20)
-                ldamodel = self.ldamodel
-            
-            else:
-                ldamodel = self.ldamodel
-                ldamodel.update(corpus)
-            
+#            else:
+#                self.dictionary.merge_with(dictionary)
+#                ldamodel=models.ldamodel.LdaModel.load("lda_results")
+#                self.ldamodel= models.ldamodel.LdaModel(self.corpus, num_topics=nn, id2word = self.dictionary, passes=20)
+#                self.ldamodel.update(corpus)
+#                ldamodel=self.ldamodel        
+                 
             t=ldamodel.print_topics(num_topics=nn, num_words=10)
             
             #term and values from text
@@ -139,7 +151,7 @@ class LDA:
             #add results to total kept in a list     
             self.addToResults(result_dict)
             
-           
+  #          ldamodel.save("lda_results")
             
     
     '''The terms and values from text.
@@ -168,14 +180,15 @@ class LDA:
             self.listResults.append(result_dict)
     
     '''Output results of the analysis
-    @param nn the number of topics used for the output name'''    
-    def printResults(self,nn):
+    @param nn the number of topics used for the output name
+    @param i run number'''    
+    def printResults(self,nn,i):
         
         os.chdir('../')
         pn=os.path.abspath('../')
-        path=pn+'/iScraper/output'
+        path=pn+'/iScraper/results'
         
-        filename=path+'/'+'lda_results'+str(nn)+'.csv'
+        filename=path+'/'+'lda_results'+str(nn)+"-"+str(i)+'.csv'
         
         fieldnames = ['Term','Value']
         
