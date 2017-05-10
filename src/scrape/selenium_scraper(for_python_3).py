@@ -1,7 +1,7 @@
 '''
-Created on Oct 12, 2016
-
-@author: maltaweel
+Created on May 10, 2016
+The code has been adjusted to work on Ptyhon 3, from selenium_scraper.py, developed for Python 2 by maltaweel.
+The adjustments have been made by mkrzyzanska
 '''
 import time
 import csv
