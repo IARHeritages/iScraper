@@ -21,3 +21,15 @@ page <- read_html(url.content)
 results.titles <- page %>% html_nodes("h3[class=r]") %>% html_text()
 results.links <- page %>% html_nodes("cite") %>% html_text()
 
+##Extract, parse and save html tree for a given link
+setwd("~/Desktop/Google Scrape")
+library(xlsx)
+library(XML)
+read.xlsx("test.xlsx", 1) -> data
+URL <- data$URL
+URL <- as.vector(URL)
+url <- (URL[[257]])
+webpage <- readLines(url)
+wp <- htmlTreeParse(webpage)
+setwd("~/Desktop/Google Scrape/URLscrapes")
+save(wp,file="wp257.R")
