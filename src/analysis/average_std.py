@@ -103,13 +103,13 @@ class Analysis:
     @param rslt1 this is the dictionary of mean values
     @param rslt2 this is the dictionary of standard deviation values
     '''    
-    def printResults(self,rslt1,rslt2):
+    def printResults(self,rslt1,rslt2,typ):
     
         os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/iScraper/output'
         
-        filename=path+'/'+'average_std_results.csv'
+        filename=path+'/'+'average_std_results_'+typ+'.csv'
         
         fieldnames = ['Term','Average','STD']
         
@@ -123,18 +123,18 @@ class Analysis:
                 std=rslt2[s]
                 writer.writerow({'Term': str(s),'Average':str(a),'STD':str(std)})
 
-            
+tpe="lda"       
 # get the working path
 os.chdir("../")
 pn=os.path.abspath('../')
-pn=pn+"/hdp"
+pn=pn+"/"+tpe
 
 #run the analysis
 a=Analysis()
 res=a.loadData(pn)
 mean=a.mean(res)
 std=a.standard_dev(res)
-a.printResults(mean, std)
+a.printResults(mean, std,tpe)
 
  
           

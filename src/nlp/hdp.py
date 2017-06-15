@@ -93,7 +93,7 @@ class HDP(lda.LDA):
             
     def printResults(self,nn,i):
         
-        os.chdir('../')
+#       os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/iScraper/results'
         
@@ -110,4 +110,3 @@ class HDP(lda.LDA):
             for key in dct:
                 v=dct[key]
                 writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
-

@@ -6,6 +6,10 @@ Created on Oct 12, 2016
 
 import requests
 from bs4 import BeautifulSoup
+from poultry import readline_dir
+
+for tweet in readline_dir('./tweets/'):
+     print(tweet.id, tweet.parsed['user']['screen_name'])
 
 url=u'https://twitter.com/search?q='
 query=u'%ironage'

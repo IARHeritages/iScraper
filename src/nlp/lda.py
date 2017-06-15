@@ -46,6 +46,8 @@ class LDA:
                 i=0
                 try:
                     for row in reader:
+                        if row in ['\n', '\r\n']:
+                            continue;
                         if(i==0):
                             i=i+1
                             continue
@@ -184,7 +186,7 @@ class LDA:
     @param i run number'''    
     def printResults(self,nn,i):
         
-        os.chdir('../')
+  #     os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/iScraper/results'
         
@@ -222,3 +224,18 @@ class LDA:
                         
         return dct
     
+    def printNewResults(self, nn,typ,i,path):
+                
+        filename=path+'/'+typ+"_results"+str(nn)+"-"+str(i)+'.csv'
+        
+        fieldnames = ['Term','Value']
+        
+        dct=self.dictionaryResults()
+        with open(filename, 'wb') as csvf:
+            writer = csv.DictWriter(csvf, fieldnames=fieldnames)
+
+            writer.writeheader()
+            
+            for key in dct:
+                v=dct[key]
+                writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
