@@ -93,9 +93,9 @@ class HDP(lda.LDA):
             
     def printResults(self,nn,i):
         
-#       os.chdir('../')
+        os.chdir('../')
         pn=os.path.abspath('../')
-        path=pn+'/iScraper/results'
+        path=pn+'/iScraper/hdp'
         
         filename=path+'/'+'hdp_results'+str(nn)+"-"+str(i)+'.csv'
         

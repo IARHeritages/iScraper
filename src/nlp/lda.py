@@ -188,7 +188,7 @@ class LDA:
         
   #     os.chdir('../')
         pn=os.path.abspath('../')
-        path=pn+'/iScraper/results'
+        path=pn+'/lda'
         
         filename=path+'/'+'lda_results'+str(nn)+"-"+str(i)+'.csv'
         
