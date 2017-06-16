@@ -15,6 +15,7 @@ class AggregateTopicModels:
         # get the current working path
         os.chdir("../")
         pn=os.path.abspath('../')
+        os.chdir(pn+'/results')
         
         results={}
         
@@ -36,8 +37,8 @@ class AggregateTopicModels:
                             i=i+1
                             continue
                         
-                        term=row['Term']
-                        value=float(row['Value'])
+                        term=row[0]
+                        value=float(row[1])
                     
                         if term in results:
                             
@@ -61,10 +62,6 @@ class AggregateTopicModels:
         ls=results.get(r)
             
             
-        total=0
-        for v in ls:
-            total+=v
-            
         mean=numpy.mean(ls)
         std=numpy.std(ls, ddof=1)
         
@@ -84,7 +81,7 @@ class AggregateTopicModels:
         
         fieldnames = ['Term','Mean','STD']
         
-        dct=self.dictionaryResults()
+        
         with open(filename, 'wb') as csvf:
             writer = csv.DictWriter(csvf, fieldnames=fieldnames)
 
