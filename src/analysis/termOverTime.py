@@ -1,4 +1,6 @@
 '''
+Class to measure term values over time for topic model output.
+
 Created on Jun 21, 2017
 
 @author: maltaweel
