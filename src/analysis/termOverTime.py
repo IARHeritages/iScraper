@@ -27,12 +27,15 @@ class TermOverTime():
             
             for filename in os.listdir(os.getcwd()):
                 
+                if(filename == ".DS_Store" in filename or ".csv" not in filename):
+                    continue
+                
+                if "-" not in filename:
+                    continue
+                
                 time=filename.split("-")[1]
                 time=time.split(".")[0]
                 
-                    
-                if(filename == ".DS_Store" in filename or ".csv" not in filename):
-                    continue
             
                 with open(filename, 'rU') as csvfile:
                     reader = csv.reader(csvfile, delimiter=',')
@@ -89,8 +92,10 @@ class TermOverTime():
             
             for key in results:
                 value=results[key]
-                v=value.split(":")
-                writer.writerow({'Time': str(key.encode("utf-8")),'Term':str(v[0]),'Value':str(v[1])})
+                for v in value:
+                    
+                    vv=v.split(":")
+                    writer.writerow({'Time': str(key.encode("utf-8")),'Term':str(vv[0]).encode("utf-8"),'Value':str(vv[1]).encode("utf-8")})
                 
                 
 t=TermOverTime()
