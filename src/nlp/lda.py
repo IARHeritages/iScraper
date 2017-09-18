@@ -32,7 +32,7 @@ class LDA:
         del self.listResults[:]
         
         doc_set=[]
-        os.chdir(pn+'/test')
+        os.chdir(pn+'/output')
         
         result=[]
         for filename in os.listdir(os.getcwd()):
