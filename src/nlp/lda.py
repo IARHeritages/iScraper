@@ -14,9 +14,9 @@ import os
 import gensim
 import csv
 import re
-import text
 import sys
 
+csv.field_size_limit(sys.maxsize)
 class LDA:
     ldamodel=None
     dictionary=None
@@ -41,7 +41,7 @@ class LDA:
                 continue
             print(filename)
             with open(filename, 'rU') as csvfile:
-                reader = csv.reader(csvfile, delimiter='*', quotechar='|') 
+                reader = csv.reader(csvfile, quotechar='|') 
                 
                 i=0
                 try:
@@ -51,10 +51,12 @@ class LDA:
                         if(i==0):
                             i=i+1
                             continue
-                        if(len(row)<2):
+                        if(len(row)<1):
                             continue
                         
-                        text=row[1]
+                        text=''
+                        for r in row:
+                            text+=r
                         text=re.sub('"','',text)
                         text=re.sub(',','',text)
                     
@@ -64,29 +66,31 @@ class LDA:
                             result.append(text)
                             i+=1
                             txt=txt+" "+text
-                            continue
-                        for s in result:
-                            if(text in s):
-                                tFalse=False
-                                break
+     #                       continue
+     #                   for s in result:
+     #                       if(text in s):
+     #                           tFalse=False
+     #                           break
                             
                         if(tFalse==True):
-                            result.append(text)
-                            txt=txt+" "+text
-                            
+     #                       result.append(text)
+                             txt=txt+" "+text
+     #                       doc_set.append(unicode(text, errors='replace'))  
                         i+=1 
                 except csv.Error, e:
                     sys.exit('line %d: %s' % (reader.line_num, e))
-                
-            doc_set.append(unicode(txt, errors='replace'))
+            
+               
+                doc_set.append(unicode(txt, errors='replace'))
             
         return doc_set
 
     '''The Latent Dirichlet Allocation model applied to the text
      @param doc_set the text
-     @param nn the topic number'''
+     @param nn the topic number
+     @param wn the word number'''
      
-    def applyModel(self, doc_set, nn):
+    def applyModel(self, doc_set, nn,wn):
         
         # reg. expression tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
@@ -106,6 +110,9 @@ class LDA:
     
             # clean and tokenize document string
             raw = i.lower()
+        
+            print(i)
+            
             tokens = tokenizer.tokenize(raw)
 
             # remove stop words from tokens
@@ -145,7 +152,7 @@ class LDA:
 #                self.ldamodel.update(corpus)
 #                ldamodel=self.ldamodel        
                  
-            t=ldamodel.print_topics(num_topics=nn, num_words=10)
+            t=ldamodel.print_topics(num_topics=nn, num_words=wn)
             
             #term and values from text
             result_dict=self.addTotalTermResults(t)
@@ -184,13 +191,13 @@ class LDA:
     '''Output results of the analysis
     @param nn the number of topics used for the output name
     @param i run number'''    
-    def printResults(self,nn,i):
+    def printResults(self,i,j):
         
   #     os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/lda'
         
-        filename=path+'/'+'lda_results'+str(nn)+"-"+str(i)+'.csv'
+        filename=path+'/'+'lda_results'+"-"+str(i)+'-'+str(j)+'.csv'
         
         fieldnames = ['Term','Value']
         

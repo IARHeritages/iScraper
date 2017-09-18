@@ -8,6 +8,8 @@ import os
 import distributed_lda 
 import distributed_hdp
 import multiprocessing
+import logging
+logging.basicConfig()
     
 CONSUMER_KEY = "Zy2qmilvNW5K7ceQ6NGAlffGT"
 CONSUMER_SECRET = "9U8dcycd3FvGTbGWECfiGOkUelU0RPcWvV7XcSF5iys8zqu105"
@@ -54,7 +56,7 @@ def runThis():
 os.chdir("../")
 pn=os.path.abspath('../')
 output=pn+'/results/'
-path=pn+'/tweets/'
+path='/home/tcrnma3/tweets/'
 lda=distributed_lda.LDA()
 hdp=distributed_hdp.HDP()
 analysis=[]

@@ -14,7 +14,6 @@ import os
 import gensim
 import csv
 import re
-import text
 import sys
 
 class LDA:

@@ -8,18 +8,17 @@ from nltk.tokenize import RegexpTokenizer
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
 from gensim import corpora, models
-from nlp import lda
+from scrape.distributed_lda import LDA
 
 import os
 import gensim
 import csv
 import re
-import text
 import sys
 
 
 
-class HDP(lda.LDA):
+class HDP(LDA):
     hdp=None
     
     def applyModel(self, doc_set, nn):

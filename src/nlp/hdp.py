@@ -14,7 +14,6 @@ import os
 import gensim
 import csv
 import re
-import text
 import sys
 
 
@@ -22,7 +21,7 @@ import sys
 class HDP(lda.LDA):
     hdp=None
     
-    def applyModel(self, doc_set, nn):
+    def applyModel(self, doc_set, nn, wn):
         
         # reg. expression tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
@@ -44,6 +43,8 @@ class HDP(lda.LDA):
             raw = i.lower()
             tokens = tokenizer.tokenize(raw)
 
+            print(i)
+            
             # remove stop words from tokens
             stopped_tokens = [i for i in tokens if not i in en_stop]
     
@@ -80,7 +81,7 @@ class HDP(lda.LDA):
 #              hdp=self.hdp
             
             
-            t=hdp.print_topics(num_topics=-1, num_words=nn)
+            t=hdp.print_topics(num_topics=nn, num_words=wn)
             
             #term and values from text
             result_dict=self.addTotalTermResults(t)
@@ -91,13 +92,13 @@ class HDP(lda.LDA):
 #          hdp.save("hdp_results")
             
             
-    def printResults(self,nn,i):
+    def printResults(self,i,j):
         
         os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/iScraper/hdp'
         
-        filename=path+'/'+'hdp_results'+str(nn)+"-"+str(i)+'.csv'
+        filename=path+'/'+'hdp_results'+"-"+str(i)+'-'+str(j)+'.csv'
         
         fieldnames = ['Term','Value']
         

@@ -120,6 +120,8 @@ class Analysis:
 
             for s in rslt1:
                 a=rslt1[s]
+                if(a==0):
+                    continue
                 std=rslt2[s]
                 writer.writerow({'Term': str(s),'Average':str(a),'STD':str(std)})
 

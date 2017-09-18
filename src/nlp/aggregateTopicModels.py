@@ -19,8 +19,9 @@ class AggregateTopicModels:
         
         results={}
         
+        n=0
         for filename in os.listdir(os.getcwd()):
-            
+
             if(filename == ".DS_Store" in filename or ".csv" not in filename):
                 continue
             
@@ -53,6 +54,7 @@ class AggregateTopicModels:
                 except csv.Error, e:
                     sys.exit('line %d: %s' % (reader.line_num, e))
     
+            n+=1
         return results
     
     def doMaths(self,results,r):
@@ -71,13 +73,13 @@ class AggregateTopicModels:
         return output
     
     
-    def printResults(self,dct):
+    def printResults(self,dct,n):
         
         #     os.chdir('../')
         pn=os.path.abspath('../')
-        path=pn+'/results'
+        path=pn+'/output'
         
-        filename=path+'/'+'aggregated_topic_model_results.csv'
+        filename=path+'/'+'aggregated_topic_model_results'+str(n)+'.csv'
         
         fieldnames = ['Term','Mean','STD']
         
@@ -94,9 +96,12 @@ class AggregateTopicModels:
                 writer.writerow({'Term': str(key.encode("utf-8")),'Mean':str(mean),'STD':str(std)})
                 
 
-atm=AggregateTopicModels()
-results=atm.readAndAddFiles()
 
+
+atm=AggregateTopicModels()
+
+results=atm.readAndAddFiles()
+n='_hdp_week16'
 m={}
 for r in results:
     v={}
@@ -105,6 +110,6 @@ for r in results:
     v['std']=output['std']
     m[r]=v
     
-atm.printResults(m)
+atm.printResults(m,n)
     
     
