@@ -32,7 +32,7 @@ class LDA:
         del self.listResults[:]
         
         doc_set=[]
-        os.chdir(pn+'/output')
+        os.chdir(pn+'/test')
         
         result=[]
         for filename in os.listdir(os.getcwd()):
@@ -88,9 +88,10 @@ class LDA:
     '''The Latent Dirichlet Allocation model applied to the text
      @param doc_set the text
      @param nn the topic number
-     @param wn the word number'''
+     @param wn the word number
+     @param p the number of passes'''
      
-    def applyModel(self, doc_set, nn,wn):
+    def applyModel(self, doc_set, nn,wn,p):
         
         # reg. expression tokenizer
         tokenizer = RegexpTokenizer(r'\w+')
@@ -139,7 +140,7 @@ class LDA:
                 continue
             
             # generate LDA model
-            ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, update_every=1,id2word = dictionary, passes=20)
+            ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, update_every=1,id2word = dictionary, passes=p)
 #            ldamodel=None
 #            if(self.ldamodel==None):
 #                self.ldamodel= gensim.models.ldamodel.LdaModel(corpus, num_topics=nn, update_every=1,id2word = dictionary, passes=20)
@@ -153,6 +154,8 @@ class LDA:
 #                ldamodel=self.ldamodel        
                  
             t=ldamodel.print_topics(num_topics=nn, num_words=wn)
+            
+            tt=ldamodel.print_topics()
             
             #term and values from text
             result_dict=self.addTotalTermResults(t)
@@ -175,6 +178,7 @@ class LDA:
                     ttnts=t.split("*")
                     v=float(ttnts[0])
                     t=ttnts[1]
+                    t=str(a)+":"+t
                     if(t in result_dict):
                         continue
                     else:
@@ -190,16 +194,18 @@ class LDA:
     
     '''Output results of the analysis
     @param nn the number of topics used for the output name
-    @param i run number'''    
-    def printResults(self,i,j):
+    @param i topic number
+    @param j the word number
+    @param p the pass number'''    
+    def printResults(self,i,j,p):
         
   #     os.chdir('../')
         pn=os.path.abspath('../')
         path=pn+'/lda'
         
-        filename=path+'/'+'lda_results'+"-"+str(i)+'-'+str(j)+'.csv'
+        filename=path+'/'+'lda_results'+"-"+str(i)+'-'+str(j)+'-'+str(p)+'.csv'
         
-        fieldnames = ['Term','Value']
+        fieldnames = ['Topic','Term','Value']
         
         dct=self.dictionaryResults()
         with open(filename, 'wb') as csvf:
@@ -209,7 +215,9 @@ class LDA:
             
             for key in dct:
                 v=dct[key]
-                writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
+                tn=key.split(":")[0]
+                kt=key.split(":")[1]
+                writer.writerow({'Topic':str(tn),'Term': str(kt.encode("utf-8")),'Value':str(v)})
         
     '''Method aggregates all the dictionaries for keyterms and their values.
      @return dct a dictionary of all keyterms and values'''           

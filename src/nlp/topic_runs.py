@@ -27,7 +27,8 @@ for i in range(10,100,10):
 #iterate and try a range of numbers for the number of topics
 for i in range(10,100,10):
     for j in range(10,40,10):
-        lda=LDA()
-        results=lda.retrieveText(pn)
-        lda.applyModel(results, i,j)
-        lda.printResults(i,j)
+        for k in range(20,50,10):
+            lda=LDA()
+            results=lda.retrieveText(pn)
+            lda.applyModel(results, i,j,k)
+            lda.printResults(i,j,k)

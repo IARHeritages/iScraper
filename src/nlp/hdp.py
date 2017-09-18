@@ -100,7 +100,7 @@ class HDP(lda.LDA):
         
         filename=path+'/'+'hdp_results'+"-"+str(i)+'-'+str(j)+'.csv'
         
-        fieldnames = ['Term','Value']
+        fieldnames = ['Topic','Term','Value']
         
         dct=self.dictionaryResults()
         with open(filename, 'wb') as csvf:
@@ -110,4 +110,6 @@ class HDP(lda.LDA):
             
             for key in dct:
                 v=dct[key]
-                writer.writerow({'Term': str(key.encode("utf-8")),'Value':str(v)})
+                tn=key.split(":")[0]
+                kt=key.split(":")[1]
+                writer.writerow({'Topic':str(tn),'Term': str(kt.encode("utf-8")),'Value':str(v)})
