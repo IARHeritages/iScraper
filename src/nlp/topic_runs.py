@@ -6,8 +6,8 @@ Created on Apr 20, 2017
 @author: maltaweel
 '''
 
-from nlp.lda import LDA
-from nlp.hdp import HDP
+from lda import LDA
+from hdp import HDP
 import os
 
 
