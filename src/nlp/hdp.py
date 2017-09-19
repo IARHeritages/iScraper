@@ -43,7 +43,7 @@ class HDP(lda.LDA):
             raw = i.lower()
             tokens = tokenizer.tokenize(raw)
 
-            print(i)
+            print(i.encode("utf-8"))
             
             # remove stop words from tokens
             stopped_tokens = [i for i in tokens if not i in en_stop]
