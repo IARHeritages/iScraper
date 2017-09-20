@@ -9,7 +9,7 @@ import os
 import re
 from hdp import HDP
 import operator
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import warnings
 import gensim
 import numpy as np
@@ -219,9 +219,11 @@ pn=os.path.abspath(__file__)
 pn=pn.split("src")[0]
 results=hdp.retrieveText(pn)
 
+bigram = gensim.models.Phrases(results) 
 #train_texts = process_texts(train_texts)
+
 train_texts=process_texts(results)
-bigram = gensim.models.Phrases(train_texts) 
+
 
 preProcsText(results)
 
