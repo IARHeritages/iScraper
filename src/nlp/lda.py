@@ -75,13 +75,13 @@ class LDA:
                         if(tFalse==True):
      #                       result.append(text)
                              txt=txt+" "+text
-     #                       doc_set.append(unicode(text, errors='replace'))  
+                             doc_set.append(unicode(text, errors='replace'))  
                         i+=1 
                 except csv.Error, e:
                     sys.exit('line %d: %s' % (reader.line_num, e))
             
                
-                doc_set.append(unicode(txt, errors='replace'))
+     #           doc_set.append(unicode(txt, errors='replace'))
             
         return doc_set
 
@@ -155,7 +155,6 @@ class LDA:
                  
             t=ldamodel.print_topics(num_topics=nn, num_words=wn)
             
-            tt=ldamodel.print_topics()
             
             #term and values from text
             result_dict=self.addTotalTermResults(t)

@@ -83,6 +83,7 @@ class HDP(lda.LDA):
             
             t=hdp.print_topics(num_topics=nn, num_words=wn)
             
+            
             #term and values from text
             result_dict=self.addTotalTermResults(t)
             
@@ -96,7 +97,7 @@ class HDP(lda.LDA):
         
         os.chdir('../')
         pn=os.path.abspath('../')
-        path=pn+'/iScraper/hdp'
+        path=pn+'/iScraper/results'
         
         filename=path+'/'+'hdp_results'+"-"+str(i)+'-'+str(j)+'.csv'
         
