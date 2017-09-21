@@ -8,7 +8,7 @@ import os
 import re
 os.chdir('../')
 fileLocation=os.path.abspath('../')
-path=fileLocation+'/output/'
+path=fileLocation+'/test/'
 
 for filename in os.listdir(path):
     with open(path+filename, 'r') as filehandle:
