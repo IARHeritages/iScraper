@@ -15,6 +15,7 @@ import gensim
 import numpy as np
 warnings.filterwarnings('ignore')  # Let's not pay heed to them right now
 import csv
+from nltk.tokenize import RegexpTokenizer
 
 from gensim.models import CoherenceModel, LdaModel, LsiModel, HdpModel
 from gensim.models.wrappers import LdaMallet
@@ -74,9 +75,13 @@ def process_texts(texts):
     -------
     texts: Pre-processed tokenized texts.
     """
+    
+    # reg. expression tokenizer
+        
     texts = [[word for word in line if word not in stops] for line in texts]
     texts = [bigram[line] for line in texts]
     texts = [[word.split('/')[0] for word in lemmatize(' '.join(line), allowed_tags=re.compile('(NN)'), min_length=3)] for line in texts]
+
     return texts
 
 def evaluate_graph(dictionary, corpus, texts, limit):

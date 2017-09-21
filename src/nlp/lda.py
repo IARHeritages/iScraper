@@ -33,7 +33,7 @@ class LDA:
         
         doc_set=[]
         os.chdir(pn+'/output')
-        
+        en_stop = get_stop_words('en')
         result=[]
         for filename in os.listdir(os.getcwd()):
             txt=''
@@ -54,12 +54,15 @@ class LDA:
                         if(len(row)<1):
                             continue
                         
+        #                if i==100:
+        #                    break
                         text=''
                         for r in row:
-                            text+=r
+                            text+=r.strip()
+                            
                         text=re.sub('"','',text)
                         text=re.sub(',','',text)
-                    
+                        text.strip()
                         tFalse=True
                         
                         if(len(result)==0):
@@ -75,7 +78,15 @@ class LDA:
                         if(tFalse==True):
      #                       result.append(text)
                              txt=txt+" "+text
-                             doc_set.append(unicode(text, errors='replace'))  
+                             
+                             if text==' ':
+                                 continue
+                             
+                             tokenizer = RegexpTokenizer(r'\w+')
+                             text = tokenizer.tokenize(unicode(text, errors='replace'))
+                             stopped_tokens = [t for t in text if not t in en_stop]
+                             
+                             doc_set.append(stopped_tokens)  
                         i+=1 
                 except csv.Error, e:
                     sys.exit('line %d: %s' % (reader.line_num, e))
